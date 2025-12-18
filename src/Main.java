@@ -100,8 +100,8 @@ public class Main {
         //Get product input
         productCode = getInput("string", "Product Code");
         productName = getInput("string", "Product Name");
-        productQuantity = Integer.parseInt(getInput("number", "Product Quantity"));
-        productPrice = Double.parseDouble(getInput("number", "Product Price"));
+        productQuantity = Integer.parseInt(getInput("int", "Product Quantity"));
+        productPrice = Double.parseDouble(getInput("double", "Product Price"));
 
         //Calculations
         calculateDeliveryCost();
@@ -142,10 +142,18 @@ public class Main {
         }
 
         //Check if 0 entered
-        if (inputType.equals("number")) {
+        if (inputType.equals("int")) {
+            int numberInt = Integer.parseInt(input);
+            if (numberInt <= 0) {
+                throw new IllegalArgumentException(item + " must be greater than 0.");
+            }
+        }
+
+        //Check if 0.0 entered
+        if (inputType.equals("double")) {
             double numberDouble = Double.parseDouble(input);
             if (numberDouble <= 0) {
-                throw new IllegalArgumentException(item + " must be greater than 0.");
+                throw new IllegalArgumentException(item + " must be greater than 0.0");
             }
         }
         return input;
