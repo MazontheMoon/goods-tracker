@@ -30,18 +30,7 @@ public class Main {
             displayMenu();
 
             //Get user selection
-            try {
-                System.out.print("Enter your menu choice: ");
-                userChoice = scanner.nextInt();
-            } catch (InputMismatchException e) {
-                //clear scanner cache
-                scanner.nextLine();
-                System.out.println("Enter Numbers Only");
-            } catch (Exception e) {
-                //clear scanner cache
-                scanner.nextLine();
-                throw new RuntimeException(e);
-            }
+            userChoice = getMenuChoice();
 
             switch (userChoice) {
                 case 1:
@@ -95,6 +84,23 @@ public class Main {
         System.out.println("5. Reports");
         System.out.println("6. Exit");
         System.out.println("------------");
+    }
+
+    public static int getMenuChoice(){
+        int choice = 0;
+        try {
+            System.out.print("Enter your menu choice: ");
+            choice = scanner.nextInt();
+        } catch (InputMismatchException e) {
+            //clear scanner cache
+            scanner.nextLine();
+            System.out.println("Enter Numbers Only");
+        } catch (Exception e) {
+            //clear scanner cache
+            scanner.nextLine();
+            throw new RuntimeException(e);
+        }
+        return choice;
     }
 
     /*===========================
