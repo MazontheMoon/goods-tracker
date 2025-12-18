@@ -21,9 +21,10 @@ public class Main {
     public static void main(String[] args) {
 
         //Display greeting
-        displayGreeting();
+        displayMessage("Welcome to the Stock Management System");
 
         while (isActive) {
+
             //Display menu
             displayMenu();
 
@@ -33,43 +34,45 @@ public class Main {
 
             switch (userChoice) {
                 case 1:
-                    displayComingSoonMessage("Payroll");
+                    displayMessage("Payroll option not yet available.");
                     break;
                 case 2:
                     handleGoodsIn();
                     break;
                 case 3:
-                    displayComingSoonMessage("Goods Out");
+                    displayMessage("Goods Out option not yet available.");
                     break;
                 case 4:
-                    displayComingSoonMessage("Stock Control");
+                    displayMessage("Stock Control option not yet available.");
                     break;
                 case 5:
-                    displayComingSoonMessage("Reports");
+                    displayMessage("Reports option not yet available.");
                     break;
                 case 6:
                     isActive = false;
                     break;
                 default:
-                    System.out.println("INVALID CHOICE. Enter a number between 1 and 6");
-
+                    displayMessage("INVALID CHOICE. Enter a number between 1 and 6");
             }
         }
 
+        //Exit program
         scanner.close();
-
-        displayExitMessage();
-
+        displayMessage("Thank you for using the Stock Management System");
     }
 
-    //Display greeting
-    public static void displayGreeting() {
+    /*=============
+    DISPLAY MESSAGE
+    ===============*/
+    public static void displayMessage(String message) {
         System.out.println("=======================================");
-        System.out.println("Welcome to the Stock Management System");
+        System.out.println(message);
         System.out.println("=======================================");
     }
 
-    //Display menu
+    /*============
+    DISPLAY MENU
+    ==============*/
     public static void displayMenu() {
         System.out.println("------------");
         System.out.println("Menu Options");
@@ -83,164 +86,88 @@ public class Main {
         System.out.println("------------");
     }
 
-    //Display placeholder message for unavailable features
-    public static void displayComingSoonMessage(String name) {
-        System.out.println("-----------------------------------------------");
-        System.out.println(name + " option not available.");
-        System.out.println("-----------------------------------------------");
-    }
-
-    //Display exit message
-    public static void displayExitMessage() {
-        System.out.println("===============================================");
-        System.out.println("Thank you for using the Stock Management System");
-        System.out.println("===============================================");
-    }
-
-    /*========================
-    HANDLE GOODS FUNCTIONALITY
-    =========================*/
-
+    /*===========================
+    HANDLE GOODS IN FUNCTIONALITY
+    =============================*/
     public static void handleGoodsIn() {
-        System.out.println("--------------------------");
-        System.out.println("Goods In Management System");
-        System.out.println("--------------------------");
+
+        //Show greeting
+        displayMessage("Goods In Management System");
 
         //clear scanner cache
         scanner.nextLine();
 
-        getProductCode();
-        getProductName();
-        getProductQuantity();
-        getProductPrice();
-        displayDeliveryCost();
+        //Get product input
+        productCode = getInput("string", "Product Code");
+        productName = getInput("string", "Product Name");
+        productQuantity = Integer.parseInt(getInput("number", "Product Quantity"));
+        productPrice = Double.parseDouble(getInput("number", "Product Price"));
+
+        //Calculations
+        calculateDeliveryCost();
+
+        //Display results on screen
+        displayMessage("Delivery Cost for " + productQuantity + " " + productName + " is: $" + deliveryCost);
+
+        //Add product to text file
         writeToFile();
 
     }
 
-    //GET PRODUCT INPUT
-    public static void getProductCode() {
+    /*========
+    GET INPUT
+    =========*/
+
+    public static String getInput(String inputType, String itemTitle) {
         while (true) {
             try {
-                System.out.print("Enter Product Code: ");
-                productCode = validateProductCode(scanner.nextLine());
-                break;
+                System.out.print("Enter " + itemTitle + " :");
+                return validateInput(inputType, itemTitle, scanner.nextLine());
             } catch (IllegalArgumentException e) {
-                System.out.println("Error: " + e.getMessage());
+                System.out.println("Illegal Argument Error: " + e.getMessage());
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
         }
-    }
-
-    public static void getProductName() {
-        while (true) {
-            try {
-                System.out.print("Enter Product Name: ");
-                productName = validateProductName(scanner.nextLine());
-                break;
-            } catch (IllegalArgumentException e) {
-                System.out.println("Error: " + e.getMessage());
-            } catch (Exception e) {
-                System.out.println(e.getMessage());
-            }
-        }
-    }
-
-    public static void getProductQuantity() {
-        while (true) {
-            try {
-                System.out.print("Enter Quantity of Product: ");
-                productQuantity = validateProductQuantity(scanner.nextLine());
-                break;
-            } catch (IllegalArgumentException e) {
-                System.out.println("Error: " + e.getMessage());
-            } catch (Exception e) {
-                System.out.println(e.getMessage());
-            }
-        }
-    }
-
-    public static void getProductPrice() {
-        while (true) {
-            try {
-                System.out.print("Enter Price of Product: ");
-                productPrice = validateProductPrice(scanner.nextLine());
-                break;
-            } catch (IllegalArgumentException e) {
-                System.out.println("Error: " + e.getMessage());
-            } catch (Exception e) {
-                System.out.println(e.getMessage());
-            }
-        }
-    }
-
-    //VALIDATE PRODUCT INPUT
-    public static String validateProductCode(String input) {
-        //Check for blank input
-        if (input.isEmpty()) {
-            throw new IllegalArgumentException("Product Code cannot be blank.");
-        }
-        return input;
-
-    }
-
-    public static String validateProductName(String input) {
-        //Check for blank input
-        if (input.isEmpty()) {
-            throw new IllegalArgumentException("Product Name cannot be blank.");
-        }
-        return input;
-
-    }
-
-    public static int validateProductQuantity(String input) {
-        //Check for blank input
-        if (input.isEmpty()) {
-            throw new IllegalArgumentException("Quantity must be filled in.");
-        }
-
-        //Check quantity not 0
-        int quantity = Integer.parseInt(input);
-        if (quantity <= 0) {
-            throw new IllegalArgumentException("Quantity cannot be 0.");
-        }
-        return quantity;
-    }
-
-    public static double validateProductPrice(String input) {
-        //Check for blank input
-        if (input.isEmpty()) {
-            throw new IllegalArgumentException("Price must be filled in.");
-        }
-
-        //Check price not 0
-        double price = Double.parseDouble(input);
-        if (price <= 0) {
-            throw new IllegalArgumentException("Price cannot be 0.0");
-        }
-        return price;
-
-    }
-
-    //PRODUCT INPUT CALCULATIONS
-    public static void displayDeliveryCost() {
-
-        deliveryCost = productPrice * productQuantity;
-        System.out.println("Delivery Cost for " + productQuantity + " " + productName + " is: $" + deliveryCost);
     }
 
     /*============
-    Write To File
-    =============*/
+    VALIDATE INPUT
+    ==============*/
+    public static String validateInput(String inputType, String item, String input) {
 
-    public static void writeToFile(){
+        //Check for blank input
+        if (input.isEmpty()) {
+            throw new IllegalArgumentException(item + " cannot be blank.");
+        }
+
+        //Check if 0 entered
+        if (inputType.equals("number")) {
+            double numberDouble = Double.parseDouble(input);
+            if (numberDouble <= 0) {
+                throw new IllegalArgumentException(item + " must be greater than 0.");
+            }
+        }
+        return input;
+    }
+
+    /*====================
+    GOODS IN CALCULATIONS
+    ====================*/
+    //PRODUCT INPUT CALCULATIONS
+    public static void calculateDeliveryCost() {
+        deliveryCost = productPrice * productQuantity;
+    }
+
+    /*===================================
+    PREPARE TEXT CONTENT TO WRITE TO FILE
+    ====================================*/
+    public static String prepareContentToWrite(){
         NumberFormat currency = NumberFormat.getCurrencyInstance();
         LocalDate date = LocalDate.now();
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-        String filePath = "C:\\temp\\goodsIn.txt";
-        String goodsInLog = String.format("""
+        return String.format("""
                         ========================
                         Goods Inward %s
                         ========================
@@ -249,18 +176,25 @@ public class Main {
                         Product Quantity: %d
                         Product Price: %s
                         Delivery Cost: %s
-                       
+                        
                         """,
-                date,
+                date.format(dateFormatter),
                 productCode,
                 productName,
                 productQuantity,
                 currency.format(productPrice),
                 currency.format(deliveryCost)
         );
+    }
+
+    /*=================
+    WRITE TO TEXT FILE
+    ==================*/
+    public static void writeToFile() {
+        String filePath = "C:\\temp\\goodsIn.txt";
 
         try (FileWriter writer = new FileWriter(filePath, true)) {
-            writer.write(goodsInLog);
+            writer.write(prepareContentToWrite());
         } catch (FileNotFoundException e) {
             System.out.println("Cannot locate file " + filePath);
         } catch (IOException e) {
