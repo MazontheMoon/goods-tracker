@@ -70,9 +70,9 @@ public class Main {
         System.out.println("===============================================");
     }
 
-    /*============
+    /*===========
     DISPLAY MENU
-    ==============*/
+    =============*/
     public static void displayMenu() {
         System.out.println("------------");
         System.out.println("Menu Options");
@@ -86,7 +86,10 @@ public class Main {
         System.out.println("------------");
     }
 
-    public static int getMenuChoice(){
+    /*==============
+    GET MENU CHOICE
+    ===============*/
+    public static int getMenuChoice() {
         int choice = 0;
         try {
             System.out.print("Enter your menu choice: ");
@@ -140,7 +143,7 @@ public class Main {
                 System.out.print("Enter " + itemTitle + " :");
                 return validateInput(inputType, itemTitle, scanner.nextLine());
             } catch (IllegalArgumentException e) {
-                System.out.println("Illegal Argument Error: " + e.getMessage());
+                System.out.println("Invalid Entry. " + e.getMessage());
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
@@ -183,9 +186,9 @@ public class Main {
         deliveryCost = productPrice * productQuantity;
     }
 
-    /*===================================
-    PREPARE TEXT CONTENT TO WRITE TO FILE
-    ====================================*/
+    /*=====================
+    PREPARE FILE CONTENT
+    =======================*/
     public static String prepareContentToWrite() {
         NumberFormat currency = NumberFormat.getCurrencyInstance();
         LocalDate date = LocalDate.now();
