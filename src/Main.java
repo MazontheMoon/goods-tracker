@@ -1,3 +1,7 @@
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.text.NumberFormat;
 import java.util.Scanner;
 
 public class Main {
@@ -108,6 +112,7 @@ public class Main {
         getProductQuantity();
         getProductPrice();
         displayDeliveryCost();
+        writeToFile();
 
     }
 
@@ -221,6 +226,43 @@ public class Main {
 
         deliveryCost = productPrice * productQuantity;
         System.out.println("Delivery Cost for " + productQuantity + " " + productName + " is: $" + deliveryCost);
+    }
+
+    /*============
+    Write To File
+    =============*/
+
+    public static void writeToFile(){
+        NumberFormat currency = NumberFormat.getCurrencyInstance();
+        String filePath = "C:\\temp\\goodsIn.txt";
+        String goodsInLog = String.format("""
+                        ==============
+                        Goods Inward
+                        ===============
+                        Product Code: %s
+                        Product Name: %s
+                        Product Quantity: %d
+                        Product Price: %s
+                        Delivery Cost: %s
+                        =========================
+                        """,
+                productCode,
+                productName,
+                productQuantity,
+                currency.format(productPrice),
+                currency.format(deliveryCost)
+        );
+
+        try (FileWriter writer = new FileWriter(filePath, true)) {
+            writer.write(goodsInLog);
+        } catch (FileNotFoundException e) {
+            System.out.println("Cannot locate file " + filePath);
+        } catch (IOException e) {
+            System.out.println("I/O error: " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
     }
 }
 
