@@ -2,6 +2,8 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.NumberFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 public class Main {
@@ -234,18 +236,22 @@ public class Main {
 
     public static void writeToFile(){
         NumberFormat currency = NumberFormat.getCurrencyInstance();
+        LocalDate date = LocalDate.now();
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
         String filePath = "C:\\temp\\goodsIn.txt";
         String goodsInLog = String.format("""
-                        ==============
-                        Goods Inward
-                        ===============
+                        ========================
+                        Goods Inward %s
+                        ========================
                         Product Code: %s
                         Product Name: %s
                         Product Quantity: %d
                         Product Price: %s
                         Delivery Cost: %s
-                        =========================
+                       
                         """,
+                date,
                 productCode,
                 productName,
                 productQuantity,
