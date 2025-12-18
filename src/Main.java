@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Main {
@@ -29,8 +30,18 @@ public class Main {
             displayMenu();
 
             //Get user selection
-            System.out.print("Enter your menu choice: ");
-            userChoice = scanner.nextInt();
+            try {
+                System.out.print("Enter your menu choice: ");
+                userChoice = scanner.nextInt();
+            } catch (InputMismatchException e) {
+                //clear scanner cache
+                scanner.nextLine();
+                System.out.println("Enter Numbers Only");
+            } catch (Exception e) {
+                //clear scanner cache
+                scanner.nextLine();
+                throw new RuntimeException(e);
+            }
 
             switch (userChoice) {
                 case 1:
@@ -65,9 +76,9 @@ public class Main {
     DISPLAY MESSAGE
     ===============*/
     public static void displayMessage(String message) {
-        System.out.println("=======================================");
+        System.out.println("===============================================");
         System.out.println(message);
-        System.out.println("=======================================");
+        System.out.println("===============================================");
     }
 
     /*============
@@ -92,7 +103,7 @@ public class Main {
     public static void handleGoodsIn() {
 
         //Show greeting
-        displayMessage("Goods In Management System");
+        displayMessage("Welcome to the Goods In Management System");
 
         //clear scanner cache
         scanner.nextLine();
@@ -117,7 +128,6 @@ public class Main {
     /*========
     GET INPUT
     =========*/
-
     public static String getInput(String inputType, String itemTitle) {
         while (true) {
             try {
@@ -170,7 +180,7 @@ public class Main {
     /*===================================
     PREPARE TEXT CONTENT TO WRITE TO FILE
     ====================================*/
-    public static String prepareContentToWrite(){
+    public static String prepareContentToWrite() {
         NumberFormat currency = NumberFormat.getCurrencyInstance();
         LocalDate date = LocalDate.now();
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
