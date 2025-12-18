@@ -5,7 +5,11 @@ public class Main {
     //Declare variables
     static boolean isActive = true;
     static int userChoice;
-
+    static String productCode;
+    static String productName;
+    static int productQuantity;
+    static double productPrice;
+    static double deliveryCost;
     static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
@@ -13,7 +17,7 @@ public class Main {
         //Display greeting
         displayGreeting();
 
-        while(isActive){
+        while (isActive) {
             //Display menu
             displayMenu();
 
@@ -21,7 +25,7 @@ public class Main {
             System.out.print("Enter your menu choice: ");
             userChoice = scanner.nextInt();
 
-            switch(userChoice){
+            switch (userChoice) {
                 case 1:
                     displayComingSoonMessage("Payroll");
                     break;
@@ -56,7 +60,7 @@ public class Main {
     public static void displayGreeting() {
         System.out.println("=======================================");
         System.out.println("Welcome to the Stock Management System");
-        System.out.println("=======================================\n");
+        System.out.println("=======================================");
     }
 
     //Display menu
@@ -73,20 +77,152 @@ public class Main {
         System.out.println("------------");
     }
 
+    //Display placeholder message for unavailable features
     public static void displayComingSoonMessage(String name) {
         System.out.println("-----------------------------------------------");
-        System.out.println(name + " feature is coming soon.");
+        System.out.println(name + " option not available.");
         System.out.println("-----------------------------------------------");
     }
 
+    //Display exit message
     public static void displayExitMessage() {
         System.out.println("===============================================");
         System.out.println("Thank you for using the Stock Management System");
         System.out.println("===============================================");
     }
 
-    public static void handleGoodsIn(){
-        System.out.println("goods in");
+    /*========================
+    HANDLE GOODS FUNCTIONALITY
+    =========================*/
+
+    public static void handleGoodsIn() {
+        System.out.println("--------------------------");
+        System.out.println("Goods In Management System");
+        System.out.println("--------------------------");
+
+        //clear scanner cache
+        scanner.nextLine();
+
+        getProductCode();
+        getProductName();
+        getProductQuantity();
+        getProductPrice();
+        displayDeliveryCost();
+
     }
 
+    //GET PRODUCT INPUT
+    public static void getProductCode() {
+        while (true) {
+            try {
+                System.out.print("Enter Product Code: ");
+                productCode = validateProductCode(scanner.nextLine());
+                break;
+            } catch (IllegalArgumentException e) {
+                System.out.println("Error: " + e.getMessage());
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    }
+
+    public static void getProductName() {
+        while (true) {
+            try {
+                System.out.print("Enter Product Name: ");
+                productName = validateProductName(scanner.nextLine());
+                break;
+            } catch (IllegalArgumentException e) {
+                System.out.println("Error: " + e.getMessage());
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    }
+
+    public static void getProductQuantity() {
+        while (true) {
+            try {
+                System.out.print("Enter Quantity of Product: ");
+                productQuantity = validateProductQuantity(scanner.nextLine());
+                break;
+            } catch (IllegalArgumentException e) {
+                System.out.println("Error: " + e.getMessage());
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    }
+
+    public static void getProductPrice() {
+        while (true) {
+            try {
+                System.out.print("Enter Price of Product: ");
+                productPrice = validateProductPrice(scanner.nextLine());
+                break;
+            } catch (IllegalArgumentException e) {
+                System.out.println("Error: " + e.getMessage());
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    }
+
+    //VALIDATE PRODUCT INPUT
+    public static String validateProductCode(String input) {
+        //Check for blank input
+        if (input.isEmpty()) {
+            throw new IllegalArgumentException("Product Code cannot be blank.");
+        }
+        return input;
+
+    }
+
+    public static String validateProductName(String input) {
+        //Check for blank input
+        if (input.isEmpty()) {
+            throw new IllegalArgumentException("Product Name cannot be blank.");
+        }
+        return input;
+
+    }
+
+    public static int validateProductQuantity(String input) {
+        //Check for blank input
+        if (input.isEmpty()) {
+            throw new IllegalArgumentException("Quantity must be filled in.");
+        }
+
+        //Check quantity not 0
+        int quantity = Integer.parseInt(input);
+        if (quantity <= 0) {
+            throw new IllegalArgumentException("Quantity cannot be 0.");
+        }
+        return quantity;
+    }
+
+    public static double validateProductPrice(String input) {
+        //Check for blank input
+        if (input.isEmpty()) {
+            throw new IllegalArgumentException("Price must be filled in.");
+        }
+
+        //Check price not 0
+        double price = Double.parseDouble(input);
+        if (price <= 0) {
+            throw new IllegalArgumentException("Price cannot be 0.0");
+        }
+        return price;
+
+    }
+
+    //PRODUCT INPUT CALCULATIONS
+    public static void displayDeliveryCost() {
+
+        deliveryCost = productPrice * productQuantity;
+        System.out.println("Delivery Cost for " + productQuantity + " " + productName + " is: $" + deliveryCost);
+    }
 }
+
+
+
